@@ -5,11 +5,14 @@ import com.display.product.category.dto.AllCategoryMinPriceResponse;
 import com.display.product.category.dto.MinPriceItemDTO;
 import com.display.product.category.dto.MinMaxPriceResponse;
 import com.display.product.category.repository.CategoryRepository;
+import com.display.product.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.display.product.category.exception.CategoryExceptionCode.CATEGORY_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,9 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public MinMaxPriceResponse getMinMaxPriceBrandByCategory(String categoryName) {
+        if(categoryRepository.findByName(categoryName).isEmpty()) {
+            throw new ApiException(CATEGORY_NOT_FOUND);
+        }
         BrandPriceDTO minPriceBrand = categoryRepository.findPriceByCategoryName(categoryName, true);
         BrandPriceDTO maxPriceBrand = categoryRepository.findPriceByCategoryName(categoryName, false);
         return MinMaxPriceResponse.builder()
