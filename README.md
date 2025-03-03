@@ -36,7 +36,7 @@
 
 ## 개발 스펙
 * Java 17
-* Spring Boot
+* Spring Boot 3.4.3
 * Gradle
 * Swagger
   * 접속정보 : (url) http://localhost:8080/swagger-ui/index.html#/
